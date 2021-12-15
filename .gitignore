@@ -1,6 +1,9 @@
 # Hide playground
 test area
 
+# Hide Bot secrets
+.envrc
+
 # =============================== Python Gitignore ============================
 
 # Byte-compiled / optimized / DLL files
