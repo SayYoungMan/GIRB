@@ -10,14 +10,10 @@ class GIBScraper:
 
     def __init__(self, url):
         self.url = url
-        return
     
     # verify_url checks if the url input is one of the supported types
     def _verify_url(self):
-        if self.url.startswith(self.allowedUrls):
-            return True
-        else:
-            return False
+        return self.url.startswith(self.allowedUrls)
         
     # get_html returns HTML body of the website
     def _get_html(self):
@@ -41,8 +37,7 @@ class GIBScraper:
     def _check_sentence(self, sentence):
         if sentence.get_attribute_list("class") in [['citation'], ['caption']]:
             return False
-        else:
-            return True
+        return True
 
     # get_sentences extracts all sentences wrapped around <p>
     # Returns list of sentence strings

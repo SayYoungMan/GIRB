@@ -1,0 +1,11 @@
+[MASTER]
+disable=
+    C0103, # Module name "Summer" doesn't conform to snake_case naming style (invalid-name)
+    C0114, # missing-module-docstring
+    C0115, # Missing class docstring (missing-class-docstring)
+    C0116, # Missing function or method docstring (missing-function-docstring)
+    C0200, # Consider using enumerate instead of iterating with range and len (consider-using-enumerate)
+    C0303, # Trailing whitespace (trailing-whitespace)
+    E0401, # Unable to import 'nltk.corpus' (import-error)
+    R0201, # Method could be a function (no-self-use)
+    R0903, # Too few public methods (1/2) (too-few-public-methods)
