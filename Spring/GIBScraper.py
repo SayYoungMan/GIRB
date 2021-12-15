@@ -13,20 +13,20 @@ class GIBScraper:
         return
     
     # verify_url checks if the url input is one of the supported types
-    def verify_url(self):
+    def _verify_url(self):
         if self.url.startswith(self.allowedUrls):
             return True
         else:
             return False
         
     # get_html returns HTML body of the website
-    def get_html(self):
+    def _get_html(self):
         r = requests.get(self.url)
         soup = BeautifulSoup(r.content, "html.parser")
         return soup
     
     # extract_article returns article of the website
-    def extract_article(self, soup):
+    def _extract_article(self, soup):
         article = soup.article
 
         try:
@@ -38,7 +38,7 @@ class GIBScraper:
 
         return article
 
-    def check_sentence(self, sentence):
+    def _check_sentence(self, sentence):
         if sentence.get_attribute_list("class") in [['citation'], ['caption']]:
             return False
         else:
@@ -47,25 +47,25 @@ class GIBScraper:
     # get_sentences extracts all sentences wrapped around <p>
     # Returns list of sentence strings
     # Not included in check_sentence is False
-    def get_sentences(self, article):
+    def _get_sentences(self, article):
         ps = article.find_all('p')
         sentences = []
         for p in ps:
-            if self.check_sentence(p):
+            if self._check_sentence(p):
                 sentences.append(' '.join(list(p.stripped_strings)))
         
         return sentences
     
-    def main(self):
-        if not self.verify_url():
+    def get_article_as_sentences_list(self):
+        if not self._verify_url():
             logging.error("The URL domain is not supported.")
             return None
-        soup = self.get_html()
-        article = self.extract_article(soup)
-        for s in self.get_sentences(article):
-            print(s)
+        soup = self._get_html()
+        article = self._extract_article(soup)
+        return self._get_sentences(article)
             
 
 if __name__ == "__main__":
-    sc = GIBScraper("https://www.gamesindustry.biz/articles/2021-12-09-game-changers-2021-part-four")
-    sc.main()
+    sc = GIBScraper("https://www.gamesindustry.biz/articles/2021-12-15-game-changers-2021-part-six")
+    for s in sc.get_article_as_sentences_list():
+        print(s)
