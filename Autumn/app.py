@@ -7,6 +7,20 @@ app = App(
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
 )
 
+def _extract_url(body):
+  blocks = body["event"]["blocks"]
+
+  # This is so bad
+  for b in blocks:
+    if b["type"] == "rich_text":
+      for rt in b["elements"]:
+        if rt["type"] == "rich_text_section":
+          for rts in rt["elements"]:
+            if rts["type"] == "link":
+              return rts["url"]
+  
+  return None
+
 @app.event("app_home_opened")
 def update_home_tab(client, event, logger):
   try:
@@ -57,5 +71,12 @@ def update_home_tab(client, event, logger):
   except Exception as e:
     logger.error(f"Error publishing home tab: {e}")
 
+@app.event("message")
+def print_message(body, say):
+  url = _extract_url(body)
+  if url:
+    say(url)
+
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))
+  
