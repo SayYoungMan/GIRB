@@ -5,6 +5,14 @@ from GIBScraper import GIBScraper
 from Summer import Summer
 
 # Variables that are used again
+header_blueprint = {
+  "type": "header",
+  "text": {
+    "type": "plain_text",
+    "text": ":robot_face: Welcome to Game Industry Reader! Here are the summarized articles of the day!"
+  }
+}
+
 section_blueprint = {
   "type": "section",
   "text": {
@@ -37,23 +45,33 @@ def _extract_url(body):
   
   return None
 
+def _add_block(blocks, txt, tp):
+  if tp == "title":
+    tmp = deepcopy(header_blueprint)
+    tmp["text"]["text"] = ":rolled_up_newspaper: "+txt
+  elif tp == "section":
+    tmp = deepcopy(section_blueprint)
+    tmp["text"]["text"] = txt
+  
+  blocks.append(tmp)
+  blocks.append(divider)
+
 @app.event("app_home_opened")
 def update_home_tab(client, event, logger):
   try:
     sc = GIBScraper()
     urls = sc.get_main_article_urls()
 
-    message_blocks = [divider]
+    message_blocks = [header_blueprint, divider]
 
     for url in urls:
       sc = GIBScraper(url)
-      sm = Summer(sc.get_article_as_sentences_list())
-      text = sm.generate_summary() + "\n\n :link: Link to Article: " + url
+      title, article = sc.get_article_as_sentences_list()
+      sm = Summer(article)
+      text = sm.generate_summary(top_n=3) + "\n\n :link: Link to Article: " + url
 
-      tmp = deepcopy(section_blueprint)
-      tmp["text"]["text"] = text
-      message_blocks.append(tmp)
-      message_blocks.append(divider)
+      _add_block(message_blocks, title, "title")
+      _add_block(message_blocks, text, "section")
 
     # views.publish is the method that your app uses to push a view to the Home tab
     client.views_publish(
@@ -72,12 +90,15 @@ def update_home_tab(client, event, logger):
   except Exception as e:
     logger.error(f"Error publishing home tab: {e}")
 
+# Listens to the messages and if the url is GIB article,
+# It provides a summary for the article in the chat
 @app.event("message")
 def print_message(body, say):
   url = _extract_url(body)
   if url:
     sc = GIBScraper(url)
-    sm = Summer(sc.get_article_as_sentences_list())
+    title, article = sc.get_article_as_sentences_list()
+    sm = Summer(article)
     say(sm.generate_summary())
 
 if __name__ == "__main__":

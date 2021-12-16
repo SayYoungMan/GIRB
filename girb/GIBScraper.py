@@ -56,14 +56,19 @@ class GIBScraper:
                 sentences.append(' '.join(list(p.stripped_strings)))
         
         return sentences
+
+    def _get_title(self, soup):
+        title = soup.find("h1", {"class": "title"})
+        return title.string
     
     def get_article_as_sentences_list(self):
         if not self._verify_url():
             logging.error("The URL domain is not supported.")
             return None
         soup = self._get_html()
+        title = self._get_title(soup)
         article = self._extract_article(soup)
-        return self._get_sentences(article)
+        return title, self._get_sentences(article)
 
     def get_main_article_urls(self):
         urls = []
@@ -83,6 +88,7 @@ class GIBScraper:
 
 if __name__ == "__main__":
     sc = GIBScraper("https://www.gamesindustry.biz/articles/2021-12-15-game-changers-2021-part-six")
-    # for s in sc.get_article_as_sentences_list():
-    #     print(s)
-    print(sc.get_main_article_urls())
+    for s in sc.get_article_as_sentences_list():
+        # print(s)
+        pass
+    # print(sc.get_main_article_urls())
