@@ -1,6 +1,7 @@
 import logging
 import requests
 from bs4 import BeautifulSoup
+from functools import lru_cache
 
 # Constants
 GIB_MAIN_PAGE = "https://www.gamesindustry.biz"
@@ -61,6 +62,7 @@ class GIBScraper:
         title = soup.find("h1", {"class": "title"})
         return title.string
     
+    @lru_cache(maxsize=32)
     def get_article_as_sentences_list(self):
         if not self._verify_url():
             logging.error("The URL domain is not supported.")
@@ -70,6 +72,7 @@ class GIBScraper:
         article = self._extract_article(soup)
         return title, self._get_sentences(article)
 
+    @lru_cache(maxsize=32)
     def get_main_article_urls(self):
         urls = []
 

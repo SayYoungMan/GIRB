@@ -3,6 +3,7 @@ from copy import deepcopy
 from slack_bolt import App
 from GIBScraper import GIBScraper
 from Summer import Summer
+from functools import lru_cache
 
 # Variables that are used again
 header_blueprint = {
@@ -56,6 +57,7 @@ def _add_block(blocks, txt, tp):
   blocks.append(tmp)
   blocks.append(divider)
 
+@lru_cache(maxsize=32)
 @app.event("app_home_opened")
 def update_home_tab(client, event, logger):
   try:
@@ -92,6 +94,7 @@ def update_home_tab(client, event, logger):
 
 # Listens to the messages and if the url is GIB article,
 # It provides a summary for the article in the chat
+@lru_cache(maxsize=32)
 @app.event("message")
 def print_message(body, say):
   url = _extract_url(body)
