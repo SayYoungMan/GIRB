@@ -51,7 +51,7 @@ class Summer:
 
         return similarity_matrix
     
-    def generate_summary(self, top_n=5):
+    def generate_summary(self, top_n=4):
         stop_words = stopwords.words('english')
         summary = []
 

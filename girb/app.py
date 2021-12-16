@@ -99,7 +99,7 @@ def print_message(body, say):
     sc = GIBScraper(url)
     title, article = sc.get_article_as_sentences_list()
     sm = Summer(article)
-    say(sm.generate_summary())
+    say("*"+title+"*\n" + sm.generate_summary())
 
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))
