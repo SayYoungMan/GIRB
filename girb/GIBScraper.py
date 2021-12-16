@@ -14,7 +14,7 @@ class GIBScraper:
         GIB_ARTICLE_PAGE,
     ])
 
-    def __init__(self, url):
+    def __init__(self, url=None):
         self.url = url
     
     # verify_url checks if the url input is one of the supported types
@@ -79,10 +79,10 @@ class GIBScraper:
         for lf in latest_feature_divs:
             urls.append(GIB_MAIN_PAGE + lf.a["href"])
 
-        print(urls)
+        return urls
 
 if __name__ == "__main__":
     sc = GIBScraper("https://www.gamesindustry.biz/articles/2021-12-15-game-changers-2021-part-six")
     # for s in sc.get_article_as_sentences_list():
     #     print(s)
-    sc.get_main_article_urls()
+    print(sc.get_main_article_urls())
