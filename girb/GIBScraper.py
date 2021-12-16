@@ -2,10 +2,16 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 
+# Constants
+GIB_MAIN_PAGE = "https://www.gamesindustry.biz"
+GIB_ARTICLE_PAGE = GIB_MAIN_PAGE + "/articles/"
+HEADLINE_CLASS = "headline"
+FEAUTRE_CLASS = "feature"
+
 class GIBScraper:
     # allowedUrls provides a set of websites that Spring is capable of scraping
     allowedUrls = tuple([
-        "https://www.gamesindustry.biz/articles/",
+        GIB_ARTICLE_PAGE,
     ])
 
     def __init__(self, url):
@@ -58,9 +64,25 @@ class GIBScraper:
         soup = self._get_html()
         article = self._extract_article(soup)
         return self._get_sentences(article)
-            
+
+    def get_main_article_urls(self):
+        urls = []
+
+        self.url = GIB_MAIN_PAGE
+        soup = self._get_html()
+
+        headline_divs = soup.find_all("div", {"class": HEADLINE_CLASS})
+        for h in headline_divs:
+            urls.append(GIB_MAIN_PAGE + h.a["href"])
+
+        latest_feature_divs = soup.find_all("div", {"class": FEAUTRE_CLASS})[:3]
+        for lf in latest_feature_divs:
+            urls.append(GIB_MAIN_PAGE + lf.a["href"])
+
+        print(urls)
 
 if __name__ == "__main__":
     sc = GIBScraper("https://www.gamesindustry.biz/articles/2021-12-15-game-changers-2021-part-six")
-    for s in sc.get_article_as_sentences_list():
-        print(s)
+    # for s in sc.get_article_as_sentences_list():
+    #     print(s)
+    sc.get_main_article_urls()
