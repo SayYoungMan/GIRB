@@ -12,3 +12,4 @@ This is created as part of Improbable internal hackathon 2021.
 
 ## Screenshot
 ![Screenshot 2021-12-16 at 16 58 45](https://user-images.githubusercontent.com/3970356/146415429-ab87323c-19ef-4770-a682-deb5e99b4da9.png)
+<img width="1395" alt="Screenshot 2021-12-16 at 17 22 47" src="https://user-images.githubusercontent.com/3970356/146419125-3b8825bf-8384-4c13-b2ee-c017ef10bf6e.png">
