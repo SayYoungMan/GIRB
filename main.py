@@ -1,5 +1,4 @@
-from Spring import GIBScraper
-from Summer import Summer
+from girb import GIBScraper, Summer
 
 if __name__ == "__main__":
     sc = GIBScraper("https://www.gamesindustry.biz/articles/2021-12-15-game-changers-2021-part-six")

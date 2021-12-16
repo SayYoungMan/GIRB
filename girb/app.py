@@ -1,5 +1,6 @@
 import os
 from slack_bolt import App
+from GIBScraper import GIBScraper
 
 # Initialize the app with bot token and signing secret
 app = App(
