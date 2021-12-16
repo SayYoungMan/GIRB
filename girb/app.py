@@ -1,6 +1,7 @@
 import os
 from slack_bolt import App
 from GIBScraper import GIBScraper
+from Summer import Summer
 
 # Initialize the app with bot token and signing secret
 app = App(
@@ -76,7 +77,9 @@ def update_home_tab(client, event, logger):
 def print_message(body, say):
   url = _extract_url(body)
   if url:
-    say(url)
+    sc = GIBScraper(url)
+    sm = Summer(sc.get_article_as_sentences_list())
+    say(sm.generate_summary())
 
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))
