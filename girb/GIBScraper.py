@@ -1,7 +1,7 @@
 import logging
+from functools import lru_cache
 import requests
 from bs4 import BeautifulSoup
-from functools import lru_cache
 
 # Constants
 GIB_MAIN_PAGE = "https://www.gamesindustry.biz"

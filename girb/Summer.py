@@ -1,8 +1,8 @@
+from functools import lru_cache
 from nltk.corpus import stopwords
 from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
-from functools import lru_cache
 
 class Summer:
     def __init__(self, article):
@@ -53,7 +53,7 @@ class Summer:
         return similarity_matrix
     
     @lru_cache(maxsize=32)
-    def generate_summary(self, top_n=4):
+    def generate_summary(self, top_n=3):
         stop_words = stopwords.words('english')
         summary = []
 

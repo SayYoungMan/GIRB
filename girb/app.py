@@ -1,9 +1,9 @@
-import os
 from copy import deepcopy
+from functools import lru_cache
+import os
 from slack_bolt import App
 from GIBScraper import GIBScraper
 from Summer import Summer
-from functools import lru_cache
 
 # Variables that are used again
 header_blueprint = {
@@ -70,7 +70,7 @@ def update_home_tab(client, event, logger):
       sc = GIBScraper(url)
       title, article = sc.get_article_as_sentences_list()
       sm = Summer(article)
-      text = sm.generate_summary(top_n=3) + "\n\n :link: Link to Article: " + url
+      text = sm.generate_summary() + "\n\n :link: Link to Article: " + url
 
       _add_block(message_blocks, title, "title")
       _add_block(message_blocks, text, "section")
@@ -102,7 +102,7 @@ def print_message(body, say):
     sc = GIBScraper(url)
     title, article = sc.get_article_as_sentences_list()
     sm = Summer(article)
-    say("*"+title+"*\n" + sm.generate_summary())
+    say(":rolled_up_newspaper: *"+title+"*\n" + sm.generate_summary())
 
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))
