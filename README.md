@@ -6,6 +6,6 @@ This is created as part of Improbable internal hackathon 2021.
 
 ## Modules
 
-- **Spring** is in charge of connecting to website and scraping main article of the news.
+- **GIRBScraper** is in charge of going to the url and scraping the article in it.
 - **Summer** provides summary of crawled article.
-- **Autumn** communicates the result through slack.
+- **app** is the main Slack App body that will communicate with the user.
