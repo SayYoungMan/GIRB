@@ -62,9 +62,14 @@ class Summer:
 
         scores = nx.pagerank(similarity_graph)
 
-        ranked_sentences = sorted([(scores[i], s) for i, s in enumerate(article)], reverse=True)
+        ranked_sentences = sorted([(scores[i], i, s) for i, s in enumerate(article)], reverse=True)
 
+        chosen_idx = []
         for i in range(top_n):
-            summary.append(" ".join(ranked_sentences[i][1]))
+            chosen_idx.append(ranked_sentences[i][1])
+
+        chosen_idx.sort()
+        for i in chosen_idx:
+            summary.append(" ".join(article[i]))
 
         return " ".join(summary)
